@@ -1,16 +1,23 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Threading;
 using RestSharp;
 using ScriptCs.Contracts;
 
 namespace ScriptCs.Httpie
 {
-    public class Httpie : IScriptPackContext
+    public partial class Httpie : IScriptPackContext
     {
         private Uri uri;
-        private short port;
-        private LiberalUrlParser urlParser = new LiberalUrlParser();
-        private IRestClient restClient;
-        private IRestRequest restRequest;
+
+        private readonly Lazy<string> assemblyVersion;
+        private readonly Lazy<string> typeName;
+
+        private readonly LiberalUrlParser urlParser = new LiberalUrlParser();
+        private readonly IRestClient restClient;
+        private readonly IRestRequest restRequest;
 
         public Httpie() : this(new RestClient(), new RestRequest())
         {
@@ -21,39 +28,21 @@ namespace ScriptCs.Httpie
         {
             this.restClient = restClient;
             this.restRequest = restRequest;
+
+            typeName = new Lazy<string>(() => this.GetType().FullName);
+            assemblyVersion = new Lazy<string>(() =>
+            {
+                Assembly assembly = Assembly.GetExecutingAssembly();
+                FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+                return fvi.FileVersion;
+            });
         }
 
-        public Httpie Port(short port)
-        {
-            this.port = port;
-            return this;
-        }
-
-        public Httpie Url(string url)
-        {
-            uri = new Uri(urlParser.ParseUrl(url), UriKind.Absolute);
-            return this;
-        }
-
-        public Httpie Get()
-        {
-            return this;
-        }
-
-        public Httpie Get(string url)
-        {
-            uri = new Uri(urlParser.ParseUrl(url), UriKind.Absolute);
-            return this;
-        }
-
-        //public Httpie AddQueryParam(string key, string value)
-        //{
-        //    return this;
-        //}
-
-        public void Execute()
+        private void Execute()
         {
             restClient.BaseUrl = new Uri(uri.GetLeftPart(UriPartial.Authority));
+            restClient.UserAgent = $"{typeName.Value}/{assemblyVersion.Value}";
+
             restRequest.Resource = uri.AbsolutePath.Substring(1);
             if (!String.IsNullOrEmpty(uri.Query))
             {
@@ -65,7 +54,6 @@ namespace ScriptCs.Httpie
             }
 
             var response = restClient.Execute(restRequest);
-
             response.WriteToHost();
         }
 
