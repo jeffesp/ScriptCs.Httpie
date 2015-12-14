@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Specialized;
+using System.Net;
 
 namespace ScriptCs.Httpie
 {
@@ -22,30 +23,34 @@ namespace ScriptCs.Httpie
             while (i < query.Length)
             {
                 string key = null, value = null;
-                int keyMatchStart = i;
+                int matchStart = i;
 
+                // inner loop here is what really traverses the string, outer loop is just there
+                // mainly to add the results
                 while (i < query.Length)
                 {
                     if (query[i] == '=')
                     {
-                        key = query.Substring(keyMatchStart, i - keyMatchStart);
-                        keyMatchStart = i + 1;
+                        key = query.Substring(matchStart, i - matchStart);
+                        matchStart = i + 1;
                     }
                     else if (query[i] == '&')
                     {
-                        value = query.Substring(keyMatchStart, i - keyMatchStart);
-                        keyMatchStart = i + 1;
+                        value = query.Substring(matchStart, i - matchStart);
+                        matchStart = i + 1;
                         break;
                     }
                     i++;
                 }
 
+                // this is the case of the last entry - we didn't have a '&' to match in the above
+                // loop and set the 'value' variable
                 if (i == query.Length)
                 {
-                    value = query.Substring(keyMatchStart, i - keyMatchStart);
+                    value = query.Substring(matchStart, i - matchStart);
                 }
 
-                result.Add(key, value);
+                result.Add(key, WebUtility.UrlDecode(value));
                 i++;
             }
 
