@@ -49,7 +49,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Httpie_Get.cs" />
     <Compile Include="LiberalUrlParser.cs" />
     <Compile Include="QueryStringParser.cs" />
     <Compile Include="ResponseExtensions.cs" />
