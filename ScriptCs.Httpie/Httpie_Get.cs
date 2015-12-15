@@ -5,7 +5,6 @@ namespace ScriptCs.Httpie
 {
     public partial class Httpie
     {
-
         public void Get()
         {
             Execute();
@@ -56,6 +55,16 @@ namespace ScriptCs.Httpie
 
         public Httpie Header(string name, string value)
         {
+            if (String.IsNullOrEmpty(name))
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+            if (String.IsNullOrEmpty(value))
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
+            restRequest.AddHeader(name, value);
             return this;
         }
 
