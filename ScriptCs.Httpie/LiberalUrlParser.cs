@@ -2,9 +2,9 @@
 
 namespace ScriptCs.Httpie
 {
-    public class LiberalUrlParser
+    public static class LiberalUrlParser
     {
-        public string ParseUrl(string url)
+        public static string ParseUrl(string url)
         {
             if (String.IsNullOrWhiteSpace(url))
             {

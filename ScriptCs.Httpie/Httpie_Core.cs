@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Threading;
 using RestSharp;
 using ScriptCs.Contracts;
 
@@ -15,7 +13,6 @@ namespace ScriptCs.Httpie
         private readonly Lazy<string> assemblyVersion;
         private readonly Lazy<string> typeName;
 
-        private readonly LiberalUrlParser urlParser = new LiberalUrlParser();
         private readonly IRestClient restClient;
         private readonly IRestRequest restRequest;
 

@@ -9,30 +9,25 @@ namespace ScriptCs.Httpie.Test
 {
     public class LiberalUrlParserTest
     {
-        private LiberalUrlParser target;
-        public LiberalUrlParserTest()
-        {
-            target = new LiberalUrlParser();
-        }
 
         [Fact]
         public void ParseStringUrl_AddsHttpIfNotPresent()
         {
-            var result = target.ParseUrl("example.com");
+            var result = LiberalUrlParser.ParseUrl("example.com");
             Assert.Equal("http://example.com", result);
         }
 
         [Fact]
         public void ParseStringUrl_DoesNotModifyHttpIfPresent()
         {
-            var result = target.ParseUrl("http://example.com");
+            var result = LiberalUrlParser.ParseUrl("http://example.com");
             Assert.Equal("http://example.com", result);
         }
 
         [Fact]
         public void ParseStringUrl_DoesNotModifyHttpsIfPresent()
         {
-            var result = target.ParseUrl("https://example.com");
+            var result = LiberalUrlParser.ParseUrl("https://example.com");
             Assert.Equal("https://example.com", result);
         }
 
@@ -44,8 +39,7 @@ namespace ScriptCs.Httpie.Test
         {
             Assert.Throws<ArgumentException>(() =>
             {
-                var target = new LiberalUrlParser();
-                target.ParseUrl(input);
+                LiberalUrlParser.ParseUrl(input);
             });
         }
     }
