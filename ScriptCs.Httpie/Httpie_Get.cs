@@ -17,7 +17,7 @@ namespace ScriptCs.Httpie
         /// <summary>
         /// Performs a GET request on the url.
         /// </summary>
-        /// <param name="url">The url. Can either start with scheme, assumed http if no scheme specified.</param>
+        /// <param name="url">The url. Can either start with scheme, or assumed http if no scheme specified.</param>
         public void Get(string url)
         {
             Url(url).Execute();
@@ -26,7 +26,7 @@ namespace ScriptCs.Httpie
         /// <summary>
         /// Set the url to request.
         /// </summary>
-        /// <param name="url">The url. Can either start with scheme, assumed http if no scheme specified.</param>
+        /// <param name="url">The url. Can either start with scheme, or assumed http if no scheme specified.</param>
         /// <returns>The Httpie instance.</returns>
         public Httpie Url(string url)
         {
@@ -50,7 +50,7 @@ namespace ScriptCs.Httpie
         /// <summary>
         /// Adds additional item(s) to the query string.
         /// </summary>
-        /// <param name="query">The query "name=value" format.</param>
+        /// <param name="query">The query "name=value" or "name=value&amp;name2=value2" format.</param>
         /// <returns>The Httpie instance</returns>
         public Httpie Query(string query)
         {
@@ -108,7 +108,7 @@ namespace ScriptCs.Httpie
         /// <summary>
         /// Set the accept header value.
         /// </summary>
-        /// <param name="contentType">The value as a System.Net.Mime.ContentType</param>
+        /// <param name="contentType">The value as a <see cref="System.Net.Mime.ContentType"/>.</param>
         /// <returns>The Httpie instance.</returns>
         public Httpie Accept(ContentType contentType)
         {

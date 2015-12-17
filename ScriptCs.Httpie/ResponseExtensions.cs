@@ -1,10 +1,11 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using RestSharp;
 
 namespace ScriptCs.Httpie
 {
-    public static class ResponseExtensions
+    public static class Extensions
     {
         public static void WriteToHost(this IRestResponse response)
         {
@@ -16,7 +17,6 @@ namespace ScriptCs.Httpie
 
             // TODO: Add ProtocolVersion when it's available
 
-            var currentColor = Console.ForegroundColor;
             Console.ForegroundColor = (int)response.StatusCode > 299 ? ConsoleColor.Red : ConsoleColor.DarkGreen;
             Console.WriteLine("{0} {1}", (int)response.StatusCode, response.StatusDescription);
             Console.ResetColor();
@@ -36,5 +36,27 @@ namespace ScriptCs.Httpie
             Console.WriteLine(response.Content);   
         }
 
+        public static void WriteTo(this IRestResponse response, TextWriter output)
+        {
+            Console.SetOut(output); 
+            WriteToHost(response);
+        }
+
+        public static void WriteToHost(this IRestRequest request)
+        {
+            Console.WriteLine(request.Method);
+            Console.WriteLine(request.Resource);
+            foreach (var parameter in request.Parameters)
+            {
+                Console.WriteLine("Parameter type: {0}", parameter.Type);
+                Console.WriteLine(parameter);
+            }
+        }
+
+        public static void WriteTo(this IRestRequest request, TextWriter output)
+        {
+            Console.SetOut(output); 
+            WriteToHost(request);
+        }
     }
 }
