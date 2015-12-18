@@ -30,7 +30,7 @@ namespace ScriptCs.Httpie
         /// <returns>The Httpie instance.</returns>
         public Httpie Url(string url)
         {
-            uri = new Uri(LiberalUrlParser.ParseUrl(url), UriKind.Absolute);
+            uri = new Uri(MinimalUrlParser.ParseUrl(url), UriKind.Absolute);
             return this;
         }
 

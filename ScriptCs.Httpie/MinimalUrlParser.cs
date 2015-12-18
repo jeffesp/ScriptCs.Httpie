@@ -2,7 +2,7 @@
 
 namespace ScriptCs.Httpie
 {
-    public static class LiberalUrlParser
+    public static class MinimalUrlParser
     {
         public static string ParseUrl(string url)
         {

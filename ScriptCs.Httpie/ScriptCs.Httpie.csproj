@@ -50,7 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Httpie_Get.cs" />
-    <Compile Include="LiberalUrlParser.cs" />
+    <Compile Include="MinimalUrlParser.cs" />
     <Compile Include="QueryStringParser.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Httpie_Core.cs" />
