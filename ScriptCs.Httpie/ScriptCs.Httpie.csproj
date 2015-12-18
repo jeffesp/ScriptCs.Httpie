@@ -52,7 +52,7 @@
     <Compile Include="Httpie_Get.cs" />
     <Compile Include="LiberalUrlParser.cs" />
     <Compile Include="QueryStringParser.cs" />
-    <Compile Include="ResponseExtensions.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="Httpie_Core.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScriptPack.cs" />

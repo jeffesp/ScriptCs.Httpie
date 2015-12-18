@@ -3,6 +3,7 @@ using Moq;
 using RestSharp;
 using Xunit;
 using System.Collections.Generic;
+using System.Net.Mime;
 
 namespace ScriptCs.Httpie.Test
 {
@@ -79,6 +80,37 @@ namespace ScriptCs.Httpie.Test
 
             Assert.Equal(new Dictionary<string,string> { { "start", "query"}, { "test", "value" } }, parsed);
         }
+
+        [Fact]
+        public void CanAddHeaderToRequest()
+        {
+            var headers = new Dictionary<string,string>();
+            request.Setup(req => req.AddHeader(It.IsAny<string>(), It.IsAny<string>()))
+                .Callback<string, string>((k, v) => { headers.Add(k, v); });
+            new Httpie(client.Object, request.Object).Url("httpbin.org").Header("Something", "a-value").Get();
+            Assert.Equal(new Dictionary<string, string> {{"Something", "a-value"}}, headers);
+        }
+
+        [Fact]
+        public void CanAddAcceptHeaderFromString()
+        {
+            var headers = new Dictionary<string,string>();
+            request.Setup(req => req.AddHeader(It.IsAny<string>(), It.IsAny<string>()))
+                .Callback<string, string>((k, v) => { headers.Add(k, v); });
+            new Httpie(client.Object, request.Object).Url("httpbin.org").Accept("abc/def");
+            Assert.Equal(new Dictionary<string, string> {{"accept", "abc/def"}}, headers);
+        }
+
+        [Fact]
+        public void CanAddAcceptHeaderFromContentType()
+        {
+            var headers = new Dictionary<string,string>();
+            request.Setup(req => req.AddHeader(It.IsAny<string>(), It.IsAny<string>()))
+                .Callback<string, string>((k, v) => { headers.Add(k, v); });
+            new Httpie(client.Object, request.Object).Url("httpbin.org").Accept(new ContentType("abc/def"));
+            Assert.Equal(new Dictionary<string, string> {{"accept", "abc/def"}}, headers);
+        }
+
 
     }
 }
