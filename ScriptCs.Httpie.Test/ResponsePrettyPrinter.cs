@@ -3,10 +3,34 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xunit;
 
 namespace ScriptCs.Httpie.Test
 {
-    class ResponsePrettyPrinter
+    public class ResponsePrettyPrinter
     {
+        [Fact]
+        public void WillPrintStatusCode()
+        {
+
+        }
+
+        [Fact]
+        public void WillPrintResponseHeaders()
+        {
+
+        }
+        
+        [Fact]
+        public void WillPrintResponseBodyFormatted()
+        {
+
+        }
+
+        [Fact]
+        public void WillPrintRawBodyWhenRequested()
+        {
+
+        }
     }
 }
