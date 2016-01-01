@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Reflection;
+using System.Threading.Tasks;
 using RestSharp;
 using ScriptCs.Contracts;
 
@@ -37,6 +38,20 @@ namespace ScriptCs.Httpie
 
         private void Execute()
         {
+            ExecuteInternal();
+            var response = restClient.Execute(restRequest);
+            response.WriteToHost();
+        }
+
+        private async Task ExecuteAsync()
+        {
+            ExecuteInternal();
+            var response = await restClient.ExecuteTaskAsync(restRequest);
+            response.WriteToHost();
+        }
+
+        private void ExecuteInternal()
+        {
             restClient.BaseUrl = new Uri(uri.GetLeftPart(UriPartial.Authority));
             restClient.UserAgent = $"{typeName.Value}/{assemblyVersion.Value}";
 
@@ -49,9 +64,6 @@ namespace ScriptCs.Httpie
                     restRequest.AddQueryParameter(key, queryParameters[key]);
                 }
             }
-
-            var response = restClient.Execute(restRequest);
-            response.WriteToHost();
         }
 
 
