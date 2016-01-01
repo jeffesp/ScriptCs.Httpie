@@ -4,6 +4,7 @@ using RestSharp;
 using Xunit;
 using System.Collections.Generic;
 using System.Net.Mime;
+using System.Threading.Tasks;
 
 namespace ScriptCs.Httpie.Test
 {
@@ -111,6 +112,13 @@ namespace ScriptCs.Httpie.Test
             Assert.Equal(new Dictionary<string, string> {{"accept", "abc/def"}}, headers);
         }
 
+        [Fact]
+        public async Task CanAwaitAsyncGet()
+        {
+            await new Httpie(client.Object, request.Object).Url("example.com").GetAsync();
 
+            Assert.Equal(Method.GET, request.Object.Method);
+            Assert.Equal(new Uri("http://example.com"), client.Object.BaseUrl);
+        }
     }
 }

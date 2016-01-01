@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Mime;
+using System.Threading.Tasks;
 
 namespace ScriptCs.Httpie
 {
@@ -15,12 +16,29 @@ namespace ScriptCs.Httpie
         }
 
         /// <summary>
+        /// Performs a GET request on the configured Httpie object, using async.
+        /// </summary>
+        public async Task GetAsync()
+        {
+            await ExecuteAsync();
+        }
+
+        /// <summary>
         /// Performs a GET request on the url.
         /// </summary>
         /// <param name="url">The url. Can either start with scheme, or assumed http if no scheme specified.</param>
         public void Get(string url)
         {
             Url(url).Execute();
+        }
+
+        /// <summary>
+        /// Performs a GET request on the url, using async.
+        /// </summary>
+        /// <param name="url">The url. Can either start with scheme, or assumed http if no scheme specified.</param>
+        public async Task GetAsync(string url)
+        {
+            await Url(url).ExecuteAsync();
         }
 
         /// <summary>
