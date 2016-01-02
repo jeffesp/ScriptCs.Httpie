@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using RestSharp;
 using ScriptCs.Contracts;
+using System.IO;
 
 namespace ScriptCs.Httpie
 {
@@ -34,6 +35,24 @@ namespace ScriptCs.Httpie
                 FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
                 return fvi.FileVersion;
             });
+        }
+
+        /// <summary>
+        /// Changes the input source to be the specified file. 
+        /// </summary>
+        /// <param name="fileName">The file to use as input. The file extension will be used to figure out the serialization format.</param>
+        public Httpie SetInput(string fileName)
+        {
+            return this;
+        }
+
+        /// <summary>
+        /// Changes the output destination to the specified file.
+        /// </summary>
+        /// <param name="fileName">The file to use as output. The file extension will be used to figure out the serialization format.</param>
+        public Httpie SetOutput(string fileName)
+        {
+            return this;
         }
 
         private void Execute()

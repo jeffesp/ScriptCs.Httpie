@@ -7,55 +7,62 @@ namespace ScriptCs.Httpie
 {
     public static class Extensions
     {
+        public static InputOutput io;
+
         public static void WriteToHost(this IRestResponse response)
         {
             if (response == null)
             {
-                Console.WriteLine("No Response");
+                io.Error.WriteLine("No response available.");
                 return;
             }
 
             // TODO: Add ProtocolVersion when it's available
 
-            Console.ForegroundColor = (int)response.StatusCode > 299 ? ConsoleColor.Red : ConsoleColor.DarkGreen;
-            Console.WriteLine("{0} {1}", (int)response.StatusCode, response.StatusDescription);
-            Console.ResetColor();
+            io.ChangeColor((int)response.StatusCode > 299 ? ConsoleColor.Red : ConsoleColor.DarkGreen);
+            io.Output.WriteLine("{0} {1}", (int)response.StatusCode, response.StatusDescription);
+            io.ResetColor();
 
             foreach (var item in response.Headers.OrderBy(header => header.Name))
             {
-                Console.ForegroundColor = ConsoleColor.Blue;
-                Console.Write(item.Name);
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.Write(":");
-                Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine(item.Value);
-                Console.ResetColor();
+                io.ChangeColor(ConsoleColor.Blue);
+                io.Output.Write(item.Name);
+                io.ChangeColor(ConsoleColor.Green);
+                io.Output.Write(":");
+                io.ChangeColor(ConsoleColor.Magenta);
+                io.Output.WriteLine(item.Value);
+                io.ResetColor();
             }
 
-            Console.WriteLine();
-            Console.WriteLine(response.Content);   
+            io.Output.WriteLine();
+            io.Output.WriteLine(response.Content);   
         }
 
         public static void WriteTo(this IRestResponse response, TextWriter output)
         {
-            Console.SetOut(output); 
+            io.SetOutput(output); 
             WriteToHost(response);
         }
 
         public static void WriteToHost(this IRestRequest request)
         {
-            Console.WriteLine(request.Method);
-            Console.WriteLine(request.Resource);
+            if (request == null)
+            {
+                io.Error.WriteLine("No request given.");
+            }
+
+            io.Output.WriteLine(request.Method);
+            io.Output.WriteLine(request.Resource);
             foreach (var parameter in request.Parameters)
             {
-                Console.WriteLine("Parameter type: {0}", parameter.Type);
-                Console.WriteLine(parameter);
+                io.Output.WriteLine("Parameter type: {0}", parameter.Type);
+                io.Output.WriteLine(parameter);
             }
         }
 
         public static void WriteTo(this IRestRequest request, TextWriter output)
         {
-            Console.SetOut(output); 
+            io.SetOutput(output); 
             WriteToHost(request);
         }
     }
