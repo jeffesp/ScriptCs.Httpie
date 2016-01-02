@@ -18,13 +18,16 @@ namespace ScriptCs.Httpie
         private readonly IRestClient restClient;
         private readonly IRestRequest restRequest;
 
-        public Httpie() : this(new RestClient(), new RestRequest())
+        private InputOutput io;
+
+        public Httpie() : this(new RestClient(), new RestRequest(), new InputOutput())
         {
             
         }
 
-        public Httpie(IRestClient restClient, IRestRequest restRequest)
+        public Httpie(IRestClient restClient, IRestRequest restRequest, InputOutput io)
         {
+            this.io = io;
             this.restClient = restClient;
             this.restRequest = restRequest;
 
@@ -59,14 +62,14 @@ namespace ScriptCs.Httpie
         {
             ExecuteInternal();
             var response = restClient.Execute(restRequest);
-            response.WriteToHost();
+            response.WriteToHost(io);
         }
 
         private async Task ExecuteAsync()
         {
             ExecuteInternal();
             var response = await restClient.ExecuteTaskAsync(restRequest);
-            response.WriteToHost();
+            response.WriteToHost(io);
         }
 
         private void ExecuteInternal()

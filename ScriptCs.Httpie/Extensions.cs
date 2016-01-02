@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using RestSharp;
 
@@ -7,9 +6,8 @@ namespace ScriptCs.Httpie
 {
     public static class Extensions
     {
-        public static InputOutput io;
 
-        public static void WriteToHost(this IRestResponse response)
+        public static void WriteToHost(this IRestResponse response, InputOutput io)
         {
             if (response == null)
             {
@@ -38,13 +36,7 @@ namespace ScriptCs.Httpie
             io.Output.WriteLine(response.Content);   
         }
 
-        public static void WriteTo(this IRestResponse response, TextWriter output)
-        {
-            io.SetOutput(output); 
-            WriteToHost(response);
-        }
-
-        public static void WriteToHost(this IRestRequest request)
+        public static void WriteToHost(this IRestRequest request, InputOutput io)
         {
             if (request == null)
             {
@@ -58,12 +50,6 @@ namespace ScriptCs.Httpie
                 io.Output.WriteLine("Parameter type: {0}", parameter.Type);
                 io.Output.WriteLine(parameter);
             }
-        }
-
-        public static void WriteTo(this IRestRequest request, TextWriter output)
-        {
-            io.SetOutput(output); 
-            WriteToHost(request);
         }
     }
 }

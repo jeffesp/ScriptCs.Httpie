@@ -12,11 +12,13 @@ namespace ScriptCs.Httpie.Test
     {
         Mock<IRestClient> client;
         Mock<IRestRequest> request;
+        Mock<InputOutput> io;
 
         public HttpieGetTest()
         {
             client = new Mock<IRestClient>();
             request = new Mock<IRestRequest>();
+            io = new Mock<InputOutput>();
 
             client.SetupProperty(c => c.BaseUrl);
             request.SetupProperty(req => req.Method);
@@ -26,7 +28,7 @@ namespace ScriptCs.Httpie.Test
         [Fact]
         public void WillGetByDefault()
         {
-            new Httpie(client.Object, request.Object).Url("example.com").Get();
+            new Httpie(client.Object, request.Object, io.Object).Url("example.com").Get();
 
             Assert.Equal(Method.GET, request.Object.Method);
             Assert.Equal(new Uri("http://example.com"), client.Object.BaseUrl);
@@ -35,7 +37,7 @@ namespace ScriptCs.Httpie.Test
         [Fact]
         public void SplitsHostAndPathAndQuery()
         {
-            new Httpie(client.Object, request.Object).Url("example.com/foo/bar?baz=bin").Get();
+            new Httpie(client.Object, request.Object, io.Object).Url("example.com/foo/bar?baz=bin").Get();
 
             Assert.Equal("foo/bar", request.Object.Resource);
         }
@@ -47,7 +49,7 @@ namespace ScriptCs.Httpie.Test
 
             request.Setup(req => req.AddQueryParameter(It.IsAny<string>(), It.IsAny<string>())).Callback<string,string>((k, v) => {parsed.Add(k,v);});
 
-            new Httpie(client.Object, request.Object).Url("example.com/foo/bar?baz=bin&quxx=5").Get();
+            new Httpie(client.Object, request.Object, io.Object).Url("example.com/foo/bar?baz=bin&quxx=5").Get();
 
             Assert.Equal(new Dictionary<string,string> { { "baz", "bin" }, { "quxx", "5" } }, parsed);
         }
@@ -55,7 +57,7 @@ namespace ScriptCs.Httpie.Test
         [Fact]
         public void AddsPortToUrl()
         {
-            new Httpie(client.Object, request.Object).Url("httpbin.org").Port(80).Get();
+            new Httpie(client.Object, request.Object, io.Object).Url("httpbin.org").Port(80).Get();
             
             Assert.Equal(80, client.Object.BaseUrl.Port);
         }
@@ -66,7 +68,7 @@ namespace ScriptCs.Httpie.Test
             var parsed = new Dictionary<string,string>();
             request.Setup(req => req.AddQueryParameter(It.IsAny<string>(), It.IsAny<string>())).Callback<string,string>((k, v) => {parsed.Add(k,v);});
 
-            new Httpie(client.Object, request.Object).Url("httpbin.org/response-headers").Query("test=value").Get();
+            new Httpie(client.Object, request.Object, io.Object).Url("httpbin.org/response-headers").Query("test=value").Get();
 
             Assert.Equal(new Dictionary<string,string> { { "test", "value" } }, parsed);
         }
@@ -77,7 +79,7 @@ namespace ScriptCs.Httpie.Test
             var parsed = new Dictionary<string,string>();
             request.Setup(req => req.AddQueryParameter(It.IsAny<string>(), It.IsAny<string>())).Callback<string,string>((k, v) => {parsed.Add(k,v);});
 
-            new Httpie(client.Object, request.Object).Url("httpbin.org/response-headers?start=query").Query("test=value").Get();
+            new Httpie(client.Object, request.Object, io.Object).Url("httpbin.org/response-headers?start=query").Query("test=value").Get();
 
             Assert.Equal(new Dictionary<string,string> { { "start", "query"}, { "test", "value" } }, parsed);
         }
@@ -88,7 +90,7 @@ namespace ScriptCs.Httpie.Test
             var headers = new Dictionary<string,string>();
             request.Setup(req => req.AddHeader(It.IsAny<string>(), It.IsAny<string>()))
                 .Callback<string, string>((k, v) => { headers.Add(k, v); });
-            new Httpie(client.Object, request.Object).Url("httpbin.org").Header("Something", "a-value").Get();
+            new Httpie(client.Object, request.Object, io.Object).Url("httpbin.org").Header("Something", "a-value").Get();
             Assert.Equal(new Dictionary<string, string> {{"Something", "a-value"}}, headers);
         }
 
@@ -98,7 +100,7 @@ namespace ScriptCs.Httpie.Test
             var headers = new Dictionary<string,string>();
             request.Setup(req => req.AddHeader(It.IsAny<string>(), It.IsAny<string>()))
                 .Callback<string, string>((k, v) => { headers.Add(k, v); });
-            new Httpie(client.Object, request.Object).Url("httpbin.org").Accept("abc/def");
+            new Httpie(client.Object, request.Object, io.Object).Url("httpbin.org").Accept("abc/def");
             Assert.Equal(new Dictionary<string, string> {{"accept", "abc/def"}}, headers);
         }
 
@@ -108,14 +110,14 @@ namespace ScriptCs.Httpie.Test
             var headers = new Dictionary<string,string>();
             request.Setup(req => req.AddHeader(It.IsAny<string>(), It.IsAny<string>()))
                 .Callback<string, string>((k, v) => { headers.Add(k, v); });
-            new Httpie(client.Object, request.Object).Url("httpbin.org").Accept(new ContentType("abc/def"));
+            new Httpie(client.Object, request.Object, io.Object).Url("httpbin.org").Accept(new ContentType("abc/def"));
             Assert.Equal(new Dictionary<string, string> {{"accept", "abc/def"}}, headers);
         }
 
         [Fact]
         public async Task CanAwaitAsyncGet()
         {
-            await new Httpie(client.Object, request.Object).Url("example.com").GetAsync();
+            await new Httpie(client.Object, request.Object, io.Object).Url("example.com").GetAsync();
 
             Assert.Equal(Method.GET, request.Object.Method);
             Assert.Equal(new Uri("http://example.com"), client.Object.BaseUrl);
