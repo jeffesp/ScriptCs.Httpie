@@ -77,7 +77,12 @@ namespace ScriptCs.Httpie
             }
         }
 
-        
-
+        internal void Flush()
+        {
+            if (Output != null)
+                Output.Flush();
+            if (Error != null)
+                Error.Flush();
+        }
     }
 }

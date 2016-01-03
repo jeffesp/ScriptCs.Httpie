@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Reflection;
+using System.IO;
 using System.Threading.Tasks;
 using RestSharp;
 using ScriptCs.Contracts;
-using System.IO;
 
 namespace ScriptCs.Httpie
 {
-    public partial class Httpie : IScriptPackContext
+    // This is the core or this project.
+    public partial class Httpie : IScriptPackContext, IDisposable
     {
         private Uri uri;
 
@@ -17,8 +18,7 @@ namespace ScriptCs.Httpie
 
         private readonly IRestClient restClient;
         private readonly IRestRequest restRequest;
-
-        private InputOutput io;
+        private readonly InputOutput io;
 
         public Httpie() : this(new RestClient(), new RestRequest(), new InputOutput())
         {
@@ -46,6 +46,7 @@ namespace ScriptCs.Httpie
         /// <param name="fileName">The file to use as input. The file extension will be used to figure out the serialization format.</param>
         public Httpie SetInput(string fileName)
         {
+            io.SetInput(new StreamReader(fileName));
             return this;
         }
 
@@ -55,6 +56,18 @@ namespace ScriptCs.Httpie
         /// <param name="fileName">The file to use as output. The file extension will be used to figure out the serialization format.</param>
         public Httpie SetOutput(string fileName)
         {
+            manageOutputStream = true;
+            io.SetOutput(new StreamWriter(fileName));
+            return this;
+        }
+
+        /// <summary>
+        /// Changes the output destination to the specified file. Assumes that you are going to manage the lifetime of the stream.
+        /// </summary>
+        /// <param name="fileName">The file to use as output. The file extension will be used to figure out the serialization format.</param>
+        public Httpie SetOutput(Stream output)
+        {
+            io.SetOutput(new StreamWriter(output));
             return this;
         }
 
@@ -88,6 +101,28 @@ namespace ScriptCs.Httpie
             }
         }
 
+        private bool disposedValue = false; 
+        private bool manageOutputStream = false;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                io.Flush();
+                if (disposing)
+                {
+                    if (!io.UsingConsoleOutput && manageOutputStream)
+                        io.Output.Dispose();
+
+                }
+                disposedValue = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+        } 
 
     }
 }

@@ -97,6 +97,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HttpieCoreTest.cs" />
     <Compile Include="HttpieGetTest.cs" />
     <Compile Include="MinimalUrlParserTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
