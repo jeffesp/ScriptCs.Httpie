@@ -1,19 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ScriptCs.Httpie
 {
+    /// <summary>
+    /// Provides an abstraction around input/output. Provides a way to have output with color or not based 
+    /// on if it is using the console as the output. Knows about writing to the console or another destination 
+    /// only from constuction or when ResetToConsole() is called.
+    /// </summary>
+    /// <remarks>
+    /// Seems to be calling for a factory with different implementations but going down that road didn't look good. 
+    /// Maybe another abstraction is relevant.
+    /// </remarks>
     public class InputOutput
     {
         public TextReader Input { get; private set; }
         public TextWriter Output { get; private set; }
         public TextWriter Error { get; private set; }
-
-        private bool usingConsole;
+        public bool UsingConsoleOutput { get; private set; }
 
         public InputOutput()
         {
@@ -33,24 +37,24 @@ namespace ScriptCs.Httpie
             Output = Console.Out;
             Error = Console.Error;
 
-            usingConsole = true;
+            UsingConsoleOutput = true;
         }
 
         public void SetInput(TextReader input) => Input = input;
         public void SetOutput(TextWriter output)
         {
             Output = output;
-            usingConsole = false;
+            UsingConsoleOutput = false;
         }
         public void SetError(TextWriter error)
         {
             Error = error;
-            usingConsole = false;
+            UsingConsoleOutput = false;
         }
 
         public void ChangeColor(ConsoleColor foreground) 
         {
-            if (usingConsole)
+            if (UsingConsoleOutput)
             {
                 Console.ForegroundColor = foreground;
             }
@@ -58,7 +62,7 @@ namespace ScriptCs.Httpie
 
         public void ChangeColor(ConsoleColor foreground, ConsoleColor background) 
         {
-            if (usingConsole)
+            if (UsingConsoleOutput)
             {
                 Console.ForegroundColor = foreground;
                 Console.BackgroundColor = background;
@@ -67,7 +71,7 @@ namespace ScriptCs.Httpie
 
         public void ResetColor()
         {
-            if (usingConsole)
+            if (UsingConsoleOutput)
             {
                 Console.ResetColor();
             }
