@@ -57,6 +57,12 @@
     <Compile Include="Httpie_Core.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScriptPack.cs" />
+    <Compile Include="Streams\Color.cs" />
+    <Compile Include="Streams\ColoringOutputStream.cs" />
+    <Compile Include="Streams\ConsoleStreamWriter.cs" />
+    <Compile Include="Streams\ContentAwareOutputStream.cs" />
+    <Compile Include="Streams\FileStreamWriter.cs" />
+    <Compile Include="Streams\IStreamWriter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
