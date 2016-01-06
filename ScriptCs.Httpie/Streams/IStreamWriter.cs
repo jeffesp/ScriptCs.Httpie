@@ -1,11 +1,13 @@
-﻿namespace ScriptCs.Httpie.Streams
+﻿using System;
+
+namespace ScriptCs.Httpie.Streams
 {
-    public interface IStreamWriter
+    public interface IStreamWriter : IDisposable
     {
         void SetColor(Color foreground);
         void SetColor(Color foreground, Color background);
         void ResetColor();
-            
+        void Write(byte[] data);
         void Write(string output);
         void Write(string format, object arg0);
         void Write(string format, params object[] args);

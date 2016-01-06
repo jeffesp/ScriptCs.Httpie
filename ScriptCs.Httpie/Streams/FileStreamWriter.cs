@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ScriptCs.Httpie.Streams
 {
-    public class FileStreamWriter : IStreamWriter, IDisposable
+    public class FileStreamWriter : IStreamWriter
     {
         private readonly StreamWriter baseStream;
         public FileStreamWriter(string filename)
@@ -27,39 +23,44 @@ namespace ScriptCs.Httpie.Streams
         {
         }
 
+        public void Write(byte[] data)
+        {
+            baseStream.BaseStream.Write(data, 0, data.Length);
+        }
+
         public void Write(string output)
         {
-            throw new NotImplementedException();
+            baseStream.Write(output);
         }
 
         public void Write(string format, params object[] args)
         {
-            throw new NotImplementedException();
+            baseStream.Write(format, args);
         }
 
         public void Write(string format, object arg0)
         {
-            throw new NotImplementedException();
+            baseStream.Write(format, arg0);
         }
 
         public void WriteLine()
         {
-            throw new NotImplementedException();
+            baseStream.WriteLine();
         }
 
         public void WriteLine(string output)
         {
-            throw new NotImplementedException();
+            baseStream.WriteLine(output);
         }
 
         public void WriteLine(string format, params object[] args)
         {
-            throw new NotImplementedException();
+            baseStream.WriteLine(format, args);
         }
 
         public void WriteLine(string format, object arg0)
         {
-            throw new NotImplementedException();
+            baseStream.WriteLine(format, arg0);
         }
 
         public void Dispose()

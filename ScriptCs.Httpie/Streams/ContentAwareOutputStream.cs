@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Net.Mime;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ScriptCs.Httpie.Streams
 {
@@ -32,6 +28,20 @@ namespace ScriptCs.Httpie.Streams
         public void SetColor(Color foreground, Color background)
         {
             baseStream.SetColor(foreground, background);
+        }
+
+        public void Write(byte[] data)
+        {
+            // If we think we can write this convert to string before passing it on.
+            // TODO: based on type see about formatting it
+            if (ContentTypeShouldOutputToConsole(contentType))
+            {
+                baseStream.Write(Encoding.UTF8.GetString(data));
+            }
+            else
+            {
+                baseStream.Write(data);
+            }
         }
 
         public void Write(string output)
@@ -67,6 +77,17 @@ namespace ScriptCs.Httpie.Streams
         public void WriteLine(string format, params object[] args)
         {
             baseStream.WriteLine(format, args);
+        }
+
+        public bool ContentTypeShouldOutputToConsole(ContentType type)
+        {
+            return type.MediaType.StartsWith("text", StringComparison.OrdinalIgnoreCase) 
+                || type.MediaType.EndsWith("json", StringComparison.OrdinalIgnoreCase) 
+                || type.MediaType.EndsWith("xml", StringComparison.OrdinalIgnoreCase);
+        }
+
+        public void Dispose()
+        {
         }
     }
 }

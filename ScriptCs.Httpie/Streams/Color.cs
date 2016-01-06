@@ -1,5 +1,8 @@
 ﻿namespace ScriptCs.Httpie.Streams
 {
+    /// <summary>
+    /// Specifiy the colors that are used for output - same names and values as the standard console and must stay that way.
+    /// </summary>
     public enum Color
     {
         Black = 0,
