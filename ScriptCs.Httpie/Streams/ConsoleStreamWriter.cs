@@ -48,6 +48,11 @@ namespace ScriptCs.Httpie.Streams
             Console.WriteLine();
         }
 
+        public void WriteLine(object output)
+        {
+            Console.WriteLine(output.ToString());
+        }
+
         public void WriteLine(string output)
         {
             Console.WriteLine(output);
@@ -61,6 +66,10 @@ namespace ScriptCs.Httpie.Streams
         public void WriteLine(string format, params object[] args)
         {
             Console.WriteLine(format, args);
+        }
+
+        public void Flush()
+        {
         }
 
         public void Dispose()

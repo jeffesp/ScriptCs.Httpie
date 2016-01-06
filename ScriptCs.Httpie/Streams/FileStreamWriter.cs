@@ -38,12 +38,17 @@ namespace ScriptCs.Httpie.Streams
             baseStream.Write(format, args);
         }
 
+        public void WriteLine()
+        {
+            baseStream.WriteLine(); 
+        }
+
         public void Write(string format, object arg0)
         {
             baseStream.Write(format, arg0);
         }
 
-        public void WriteLine()
+        public void WriteLine(object output)
         {
             baseStream.WriteLine();
         }
@@ -61,6 +66,11 @@ namespace ScriptCs.Httpie.Streams
         public void WriteLine(string format, object arg0)
         {
             baseStream.WriteLine(format, arg0);
+        }
+
+        public void Flush()
+        {
+            baseStream.Flush();
         }
 
         public void Dispose()

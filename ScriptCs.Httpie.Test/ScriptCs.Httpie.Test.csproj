@@ -109,6 +109,7 @@
     <Compile Include="Streams\ConsoleStreamWriterTest.cs" />
     <Compile Include="Streams\ContentAwareOutputStreamTest.cs" />
     <Compile Include="Streams\FileStreamWriterTest.cs" />
+    <Compile Include="Streams\StreamStreamWriterTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

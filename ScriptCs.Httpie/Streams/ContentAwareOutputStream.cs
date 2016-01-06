@@ -64,6 +64,11 @@ namespace ScriptCs.Httpie.Streams
             baseStream.WriteLine();
         }
 
+        public void WriteLine(object output)
+        {
+            baseStream.WriteLine();
+        }
+
         public void WriteLine(string output)
         {
             baseStream.WriteLine(output);
@@ -84,6 +89,11 @@ namespace ScriptCs.Httpie.Streams
             return type.MediaType.StartsWith("text", StringComparison.OrdinalIgnoreCase) 
                 || type.MediaType.EndsWith("json", StringComparison.OrdinalIgnoreCase) 
                 || type.MediaType.EndsWith("xml", StringComparison.OrdinalIgnoreCase);
+        }
+
+        public void Flush()
+        {
+            baseStream.Flush();
         }
 
         public void Dispose()

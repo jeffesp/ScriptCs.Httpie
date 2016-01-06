@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using Moq;
 using RestSharp;
@@ -22,7 +21,13 @@ namespace ScriptCs.Httpie.Test
             io = new InputOutput(null, null, null);
 
             client.SetupProperty(c => c.BaseUrl);
-            client.Setup(c => c.Execute(It.IsAny<IRestRequest>())).Returns(new RestResponse { StatusCode = System.Net.HttpStatusCode.OK, Content = "Body", StatusDescription = "OK" });
+            client.Setup(c => c.Execute(It.IsAny<IRestRequest>()))
+                .Returns(new RestResponse
+                {
+                    StatusCode = System.Net.HttpStatusCode.OK,
+                    RawBytes = Encoding.UTF8.GetBytes("Body"),
+                    StatusDescription = "OK"
+                });
             request.SetupProperty(req => req.Method);
             request.SetupProperty(req => req.Resource);
         }

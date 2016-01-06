@@ -1,10 +1,10 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using RestSharp;
+using ScriptCs.Httpie.Streams;
 
 namespace ScriptCs.Httpie
 {
-    public static class Extensions
+    public static class OutputExtensions
     {
 
         public static void WriteToHost(this IRestResponse response, InputOutput io)
@@ -17,23 +17,24 @@ namespace ScriptCs.Httpie
 
             // TODO: Add ProtocolVersion when it's available
 
-            io.ChangeColor((int)response.StatusCode > 299 ? ConsoleColor.Red : ConsoleColor.DarkGreen);
+            io.Output.SetColor((int)response.StatusCode > 299 ? Color.Red : Color.DarkGreen);
             io.Output.WriteLine("{0} {1}", (int)response.StatusCode, response.StatusDescription);
-            io.ResetColor();
+            io.Output.ResetColor();
 
             foreach (var item in response.Headers.OrderBy(header => header.Name))
             {
-                io.ChangeColor(ConsoleColor.Blue);
+                io.Output.SetColor(Color.Blue);
                 io.Output.Write(item.Name);
-                io.ChangeColor(ConsoleColor.Green);
+                io.Output.SetColor(Color.Green);
                 io.Output.Write(":");
-                io.ChangeColor(ConsoleColor.Magenta);
+                io.Output.SetColor(Color.Magenta);
                 io.Output.WriteLine(item.Value);
-                io.ResetColor();
+                io.Output.ResetColor();
             }
 
             io.Output.WriteLine();
-            io.Output.WriteLine(response.Content);   
+            io.Output.Write(response.RawBytes);
+            io.Output.WriteLine();
         }
 
         public static void WriteToHost(this IRestRequest request, InputOutput io)

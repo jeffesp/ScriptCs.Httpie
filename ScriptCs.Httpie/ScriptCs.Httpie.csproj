@@ -62,6 +62,7 @@
     <Compile Include="Streams\ContentAwareOutputStream.cs" />
     <Compile Include="Streams\FileStreamWriter.cs" />
     <Compile Include="Streams\IStreamWriter.cs" />
+    <Compile Include="Streams\StreamStreamWriter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

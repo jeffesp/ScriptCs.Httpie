@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using ScriptCs.Httpie.Streams;
 using Xunit;
 
 namespace ScriptCs.Httpie.Test
@@ -10,87 +11,50 @@ namespace ScriptCs.Httpie.Test
         public void SetToConsoleInputOutputByDefault()
         {
             var io = new InputOutput();
-            Assert.Equal(Console.Out, io.Output);
             Assert.Equal(Console.In, io.Input);
-            Assert.Equal(Console.Error, io.Error);
+            Assert.IsAssignableFrom<ConsoleStreamWriter>(io.Output);
+            Assert.IsAssignableFrom<ConsoleStreamWriter>(io.Error);
         }
 
         [Fact]
-        public void SetInputAndOuputAndErrorNotChanged()
+        public void SetInputThenOuputAndErrorNotChanged()
         {
             var io = new InputOutput();
             using (var ms = new MemoryStream())
             using (var reader = new StreamReader(ms))
             {
                 io.SetInput(reader);
-                Assert.Equal(Console.Out, io.Output);
+                Assert.IsAssignableFrom<ConsoleStreamWriter>(io.Output);
+                Assert.IsAssignableFrom<ConsoleStreamWriter>(io.Error);
                 Assert.Equal(reader, io.Input);
-                Assert.Equal(Console.Error, io.Error);
             }
         }
 
         [Fact]
-        public void SetOutputAndInputAndErrorNotChanged()
+        public void SetOutputThenInputAndErrorNotChanged()
         {
             var io = new InputOutput();
             using (var ms = new MemoryStream())
-            using (var writer = new StreamWriter(ms))
+            using (var writer = new StreamStreamWriter(ms))
             {
                 io.SetOutput(writer);
                 Assert.Equal(writer, io.Output);
                 Assert.Equal(Console.In, io.Input);
-                Assert.Equal(Console.Error, io.Error);
+                Assert.IsAssignableFrom<ConsoleStreamWriter>(io.Error);
             }
         }
 
         [Fact]
-        public void SetErrorAndInputAndOutputNotChanged()
+        public void SetErrorThenInputAndOutputNotChanged()
         {
             var io = new InputOutput();
             using (var ms = new MemoryStream())
-            using (var writer = new StreamWriter(ms))
+            using (var writer = new StreamStreamWriter(ms))
             {
                 io.SetError(writer);
-                Assert.Equal(Console.Out, io.Output);
+                Assert.IsAssignableFrom<ConsoleStreamWriter>(io.Output);
                 Assert.Equal(Console.In, io.Input);
                 Assert.Equal(writer, io.Error);
-            }
-        }
-
-        [Fact]
-        public void SettingInputStillUsingConsoleOutput()
-        {
-            var io = new InputOutput();
-            using (var ms = new MemoryStream())
-            using (var reader = new StreamReader(ms))
-            {
-                io.SetInput(reader);
-                Assert.True(io.UsingConsoleOutput);
-            }
-        }
-
-        [Fact]
-        public void SettingOutputNoLongerUsingConsoleOutput()
-        {
-            var io = new InputOutput();
-            using (var ms = new MemoryStream())
-            using (var writer = new StreamWriter(ms))
-            {
-                io.SetOutput(writer);
-                Assert.False(io.UsingConsoleOutput);
-            }
-        }
-
-        [Fact]
-        public void ResetToConsoleWillUseConsoleOutput()
-        {
-            var io = new InputOutput();
-            using (var ms = new MemoryStream())
-            using (var writer = new StreamWriter(ms))
-            {
-                io.SetOutput(writer);
-                io.ResetToConsole();
-                Assert.True(io.UsingConsoleOutput);
             }
         }
 
@@ -99,7 +63,7 @@ namespace ScriptCs.Httpie.Test
         public void WhenUsingConsoleOutputChangingColorChangesConsoleColor()
         {
             var io = new InputOutput();
-            io.ChangeColor(ConsoleColor.Cyan, ConsoleColor.DarkBlue);
+            io.Output.SetColor(Color.Cyan, Color.DarkBlue);
             Assert.Equal(ConsoleColor.Cyan, Console.ForegroundColor);
             Assert.Equal(ConsoleColor.DarkBlue, Console.BackgroundColor);
         }
