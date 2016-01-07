@@ -6,7 +6,7 @@ namespace ScriptCs.Httpie
 {
     public class InputOutput
     {
-        public TextReader Input { get; private set; }
+        public IStreamReader Input { get; private set; }
         public IStreamWriter Output { get; private set; }
         public IStreamWriter Error { get; private set; }
 
@@ -15,7 +15,7 @@ namespace ScriptCs.Httpie
             ResetToConsole();
         }
 
-        public InputOutput(TextReader input, IStreamWriter output, IStreamWriter error)
+        public InputOutput(IStreamReader input, IStreamWriter output, IStreamWriter error)
         {
             Input = input;
             Output = output;
@@ -24,12 +24,12 @@ namespace ScriptCs.Httpie
 
         public void ResetToConsole()
         {
-            Input = Console.In;
+            Input = new ConsoleStreamReader();
             Output = new ConsoleStreamWriter();
             Error = new ConsoleStreamWriter();
         }
 
-        public void SetInput(TextReader input) => Input = input;
+        public void SetInput(IStreamReader input) => Input = input;
         public void SetOutput(IStreamWriter output) => Output = output;
         public void SetError(IStreamWriter error) => Error = error;
 

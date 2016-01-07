@@ -11,7 +11,7 @@ namespace ScriptCs.Httpie.Test
         public void SetToConsoleInputOutputByDefault()
         {
             var io = new InputOutput();
-            Assert.Equal(Console.In, io.Input);
+            Assert.IsAssignableFrom<ConsoleStreamReader>(io.Input);
             Assert.IsAssignableFrom<ConsoleStreamWriter>(io.Output);
             Assert.IsAssignableFrom<ConsoleStreamWriter>(io.Error);
         }
@@ -21,7 +21,7 @@ namespace ScriptCs.Httpie.Test
         {
             var io = new InputOutput();
             using (var ms = new MemoryStream())
-            using (var reader = new StreamReader(ms))
+            using (var reader = new StreamStreamReader(ms))
             {
                 io.SetInput(reader);
                 Assert.IsAssignableFrom<ConsoleStreamWriter>(io.Output);
@@ -39,7 +39,7 @@ namespace ScriptCs.Httpie.Test
             {
                 io.SetOutput(writer);
                 Assert.Equal(writer, io.Output);
-                Assert.Equal(Console.In, io.Input);
+                Assert.IsAssignableFrom<ConsoleStreamReader>(io.Input);
                 Assert.IsAssignableFrom<ConsoleStreamWriter>(io.Error);
             }
         }
@@ -53,7 +53,7 @@ namespace ScriptCs.Httpie.Test
             {
                 io.SetError(writer);
                 Assert.IsAssignableFrom<ConsoleStreamWriter>(io.Output);
-                Assert.Equal(Console.In, io.Input);
+                Assert.IsAssignableFrom<ConsoleStreamReader>(io.Input);
                 Assert.Equal(writer, io.Error);
             }
         }

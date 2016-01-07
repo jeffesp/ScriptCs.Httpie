@@ -47,7 +47,7 @@ namespace ScriptCs.Httpie
         /// <param name="fileName">The file to use as input. The file extension will be used to figure out the serialization format.</param>
         public Httpie SetInput(string fileName)
         {
-            io.SetInput(new StreamReader(fileName));
+            io.SetInput(new FileStreamReader(fileName));
             return this;
         }
 

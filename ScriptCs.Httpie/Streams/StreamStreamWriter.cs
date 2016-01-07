@@ -9,8 +9,8 @@ namespace ScriptCs.Httpie.Streams
 {
     public class StreamStreamWriter : IStreamWriter
     {
-        private Stream baseStream;
-        private bool leaveOpen;
+        private readonly Stream baseStream;
+        private readonly bool leaveOpen;
 
         /// <summary>
         /// Wrap a <c>Stream</c> in the operation needed for this project. Will close the stream on call to <c>Dispose</c>.
