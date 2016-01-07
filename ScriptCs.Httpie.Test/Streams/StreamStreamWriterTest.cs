@@ -85,24 +85,9 @@ namespace ScriptCs.Httpie.Test.Streams
                     target.Write("testöß");
                 }
 
-                Assert.Equal("testöß", GetStringContent(stream));
+                Assert.Equal("testöß", stream.GetStringContent());
             }
         }
 
-        private string GetStringContent(Stream stream)
-        {
-            stream.Seek(0, SeekOrigin.Begin);
-            var bytes = new List<byte>();
-
-            int current = 0;
-            current = stream.ReadByte();
-            while (current != -1)
-            {
-                bytes.Add((byte)current);
-                current = stream.ReadByte();
-            }
-
-            return Encoding.UTF8.GetString(bytes.ToArray());
-        }
     }
 }

@@ -86,9 +86,9 @@ namespace ScriptCs.Httpie.Streams
 
         public bool ContentTypeShouldOutputToConsole(ContentType type)
         {
-            return type.MediaType.StartsWith("text", StringComparison.OrdinalIgnoreCase) 
-                || type.MediaType.EndsWith("json", StringComparison.OrdinalIgnoreCase) 
-                || type.MediaType.EndsWith("xml", StringComparison.OrdinalIgnoreCase);
+            return type.MediaType.StartsWith("text/", StringComparison.OrdinalIgnoreCase) 
+                || type.MediaType.EndsWith("/json", StringComparison.OrdinalIgnoreCase) 
+                || type.MediaType.EndsWith("/xml", StringComparison.OrdinalIgnoreCase);
         }
 
         public void Flush()

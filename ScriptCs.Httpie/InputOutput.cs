@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using ScriptCs.Httpie.Streams;
+﻿using ScriptCs.Httpie.Streams;
 
 namespace ScriptCs.Httpie
 {

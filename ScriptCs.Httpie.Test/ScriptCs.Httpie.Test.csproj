@@ -106,6 +106,8 @@
     <Compile Include="RequestPrettyPrinter.cs" />
     <Compile Include="ResponsePrettyPrinter.cs" />
     <Compile Include="InputOutputTest.cs" />
+    <Compile Include="StreamExtensions.cs" />
+    <Compile Include="Streams\ConsoleStreamReaderTest.cs" />
     <Compile Include="Streams\ConsoleStreamWriterTest.cs" />
     <Compile Include="Streams\ContentAwareOutputStreamTest.cs" />
     <Compile Include="Streams\FileStreamWriterTest.cs" />
