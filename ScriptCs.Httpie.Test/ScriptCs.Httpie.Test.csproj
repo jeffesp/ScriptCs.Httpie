@@ -110,7 +110,9 @@
     <Compile Include="Streams\ConsoleStreamReaderTest.cs" />
     <Compile Include="Streams\ConsoleStreamWriterTest.cs" />
     <Compile Include="Streams\ContentAwareOutputStreamTest.cs" />
+    <Compile Include="Streams\FileStreamReaderTest.cs" />
     <Compile Include="Streams\FileStreamWriterTest.cs" />
+    <Compile Include="Streams\StreamStreamReaderTest.cs" />
     <Compile Include="Streams\StreamStreamWriterTest.cs" />
   </ItemGroup>
   <ItemGroup>

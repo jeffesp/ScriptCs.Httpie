@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ScriptCs.Httpie.Streams;
 using Xunit;
 
@@ -28,7 +24,7 @@ namespace ScriptCs.Httpie.Test.Streams
                 }
                 catch (ObjectDisposedException)
                 {
-                    
+                    Assert.True(true);
                 }
             }
         }
@@ -46,6 +42,7 @@ namespace ScriptCs.Httpie.Test.Streams
                 try
                 {
                     stream.WriteByte(1);
+                    Assert.True(true);
                 }
                 catch (ObjectDisposedException)
                 {
@@ -67,6 +64,7 @@ namespace ScriptCs.Httpie.Test.Streams
                 try
                 {
                     stream.WriteByte(1);
+                    Assert.True(true);
                 }
                 catch (ObjectDisposedException)
                 {

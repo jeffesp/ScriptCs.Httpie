@@ -26,16 +26,15 @@ namespace ScriptCs.Httpie.Streams
         {
             int value = Convert.ToInt32(it);
             if (value > byte.MaxValue)
-                throw new InvalidOperationException("This is dumb.");
+                throw new InvalidOperationException("");
 
             var data = new List<byte>();
-            byte current;
-            do
+            byte current = (byte)stream.ReadByte();
+            while (current != value)
             {
-                current = (byte)stream.ReadByte();
                 data.Add(current);
+                current = (byte)stream.ReadByte();
             }
-            while (current != value);
             return data.ToArray();
         }
 

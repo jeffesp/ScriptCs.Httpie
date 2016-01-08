@@ -15,20 +15,20 @@ namespace ScriptCs.Httpie.Streams
 
         public byte[] ReadUntil(char it)
         {
+            // this is probably totally inefficient when the underlying stream can read blocks...
             var chars = new List<char>();
-            char c;
-            do
+            char c = (char)input.Read();
+            while (c != it)
             {
-                c = (char)input.Read();
                 chars.Add(c);
+                c = (char)input.Read();
             }
-            while (c != it);
             return Encoding.UTF8.GetBytes(chars.ToArray());
         }
 
         public byte[] ReadToEnd()
         {
-            return ReadUntil((char)0x13); // EOF
+            return ReadUntil((char)0xFFFF); // EOF
         }
 
         public string ReadLine()

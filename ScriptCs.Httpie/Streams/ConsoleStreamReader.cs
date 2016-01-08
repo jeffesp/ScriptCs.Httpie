@@ -10,13 +10,12 @@ namespace ScriptCs.Httpie
         public byte[] ReadUntil(char it)
         {
             var chars = new List<char>();
-            char c;
-            do
+            char c = (char)Console.Read();
+            while (c != it)
             {
-                c = (char)Console.Read();
                 chars.Add(c);
+                c = (char)Console.Read();
             }
-            while (c != it);
             return Encoding.UTF8.GetBytes(chars.ToArray());
         }
 
