@@ -27,7 +27,81 @@ namespace ScriptCs.Httpie.Test.Streams
         [Fact]
         public void ReadToEndReadsUntilEOF()
         {
-            
+            var bytes = Encoding.UTF8.GetBytes("this is a test\u0013");
+            using (var stream = new MemoryStream(bytes))
+            {
+                using (var target = new StreamStreamReader(stream))
+                {
+                    var result = target.ReadToEnd();
+                    Assert.Equal(bytes.Take(bytes.Length - 1), result);
+                }
+            }
+        }
+
+        [Fact]
+        public void ClosesStreamOnDisposeWhenToldTo()
+        {
+            using (var stream = new MemoryStream(Encoding.UTF8.GetBytes("this is a test\n")))
+            {
+                using (var target = new StreamStreamReader(stream, false))
+                {
+                    target.ReadLine();
+                }
+
+                try
+                {
+                    stream.ReadByte();
+                    Assert.False(true, "Stream should be closed by the Dispose call on StreamStreamWriter()");
+                }
+                catch (ObjectDisposedException)
+                {
+                    Assert.True(true);
+                }
+            }
+        }
+
+        [Fact]
+        public void LeavesStreamOpenOnDisposeWhenToldTo()
+        {
+            using (var stream = new MemoryStream(Encoding.UTF8.GetBytes("this is a test\n")))
+            {
+                using (var target = new StreamStreamReader(stream, true))
+                {
+                    target.ReadLine();
+                }
+
+                try
+                {
+                    stream.ReadByte();
+                    Assert.True(true);
+                }
+                catch (ObjectDisposedException)
+                {
+                    Assert.False(true, "Stream not be closed by the Dispose call on StreamStreamWriter()");
+                }
+            }
+        }
+
+        [Fact]
+        public void LeavesStreamOpenOnDisposeByDefault()
+        {
+            using (var stream = new MemoryStream(Encoding.UTF8.GetBytes("this is a test\n")))
+            {
+                using (var target = new StreamStreamReader(stream))
+                {
+                    target.ReadLine();
+                }
+
+                try
+                {
+                    stream.ReadByte();
+                    Assert.True(true);
+                }
+                catch (ObjectDisposedException)
+                {
+                    Assert.False(true, "Stream not be closed by the Dispose call on StreamStreamWriter()");
+                }
+            }
         }
 
     }
