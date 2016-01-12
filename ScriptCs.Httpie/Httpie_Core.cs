@@ -5,6 +5,7 @@ using System.IO;
 using System.Threading.Tasks;
 using RestSharp;
 using ScriptCs.Contracts;
+using ScriptCs.Httpie.Streams;
 
 namespace ScriptCs.Httpie
 {
@@ -46,7 +47,7 @@ namespace ScriptCs.Httpie
         /// <param name="fileName">The file to use as input. The file extension will be used to figure out the serialization format.</param>
         public Httpie SetInput(string fileName)
         {
-            io.SetInput(new StreamReader(fileName));
+            io.SetInput(new FileStreamReader(fileName));
             return this;
         }
 
@@ -57,7 +58,7 @@ namespace ScriptCs.Httpie
         public Httpie SetOutput(string fileName)
         {
             manageOutputStream = true;
-            io.SetOutput(new StreamWriter(fileName));
+            io.SetOutput(new FileStreamWriter(fileName));
             return this;
         }
 
@@ -67,7 +68,8 @@ namespace ScriptCs.Httpie
         /// <param name="fileName">The file to use as output. The file extension will be used to figure out the serialization format.</param>
         public Httpie SetOutput(Stream output)
         {
-            io.SetOutput(new StreamWriter(output));
+            manageOutputStream = false;
+            io.SetOutput(new StreamStreamWriter(output));
             return this;
         }
 
@@ -109,11 +111,9 @@ namespace ScriptCs.Httpie
             if (!disposedValue)
             {
                 io.Flush();
-                if (disposing)
+                if (disposing && manageOutputStream)
                 {
-                    if (!io.UsingConsoleOutput && manageOutputStream)
-                        io.Output.Dispose();
-
+                    io.Output.Dispose();
                 }
                 disposedValue = true;
             }

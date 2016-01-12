@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Streams\ConsoleStreamReader.cs" />
     <Compile Include="Httpie_Get.cs" />
     <Compile Include="InputOutput.cs" />
     <Compile Include="MinimalUrlParser.cs" />
@@ -57,6 +58,15 @@
     <Compile Include="Httpie_Core.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScriptPack.cs" />
+    <Compile Include="Streams\Color.cs" />
+    <Compile Include="Streams\ConsoleStreamWriter.cs" />
+    <Compile Include="Streams\ContentAwareOutputStream.cs" />
+    <Compile Include="Streams\FileStreamReader.cs" />
+    <Compile Include="Streams\FileStreamWriter.cs" />
+    <Compile Include="Streams\IStreamReader.cs" />
+    <Compile Include="Streams\IStreamWriter.cs" />
+    <Compile Include="Streams\StreamStreamReader.cs" />
+    <Compile Include="Streams\StreamStreamWriter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
