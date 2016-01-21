@@ -50,7 +50,6 @@ namespace ScriptCs.Httpie.Test
 
             Assert.Equal("bar", result.Keys[1]);
             Assert.Equal("baz", result[1]);
-
         }
 
         [Fact]

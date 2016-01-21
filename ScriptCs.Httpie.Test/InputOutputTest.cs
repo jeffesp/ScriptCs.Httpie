@@ -2,15 +2,22 @@
 using System.IO;
 using ScriptCs.Httpie.Streams;
 using Xunit;
+using Ploeh.AutoFixture;
 
 namespace ScriptCs.Httpie.Test
 {
     public class InputOutputTest 
     {
+        Fixture fixture;
+        public InputOutputTest()
+        {
+            fixture = new Fixture();
+        }
+
         [Fact]
         public void SetToConsoleInputOutputByDefault()
         {
-            var io = new InputOutput();
+            var io = fixture.Create<InputOutput>();
             Assert.IsAssignableFrom<ConsoleStreamReader>(io.Input);
             Assert.IsAssignableFrom<ConsoleStreamWriter>(io.Output);
             Assert.IsAssignableFrom<ConsoleStreamWriter>(io.Error);
@@ -19,7 +26,7 @@ namespace ScriptCs.Httpie.Test
         [Fact]
         public void SetInputThenOuputAndErrorNotChanged()
         {
-            var io = new InputOutput();
+            var io = fixture.Create<InputOutput>();
             using (var ms = new MemoryStream())
             using (var reader = new StreamStreamReader(ms))
             {
@@ -33,7 +40,7 @@ namespace ScriptCs.Httpie.Test
         [Fact]
         public void SetOutputThenInputAndErrorNotChanged()
         {
-            var io = new InputOutput();
+            var io = fixture.Create<InputOutput>();
             using (var ms = new MemoryStream())
             using (var writer = new StreamStreamWriter(ms))
             {
@@ -47,7 +54,7 @@ namespace ScriptCs.Httpie.Test
         [Fact]
         public void SetErrorThenInputAndOutputNotChanged()
         {
-            var io = new InputOutput();
+            var io = fixture.Create<InputOutput>();
             using (var ms = new MemoryStream())
             using (var writer = new StreamStreamWriter(ms))
             {
@@ -62,7 +69,7 @@ namespace ScriptCs.Httpie.Test
         [Fact(Skip = "Can't change console color in dll and then check in test project?")]
         public void WhenUsingConsoleOutputChangingColorChangesConsoleColor()
         {
-            var io = new InputOutput();
+            var io = fixture.Create<InputOutput>();
             io.Output.SetColor(Color.Cyan, Color.DarkBlue);
             Assert.Equal(ConsoleColor.Cyan, Console.ForegroundColor);
             Assert.Equal(ConsoleColor.DarkBlue, Console.BackgroundColor);

@@ -23,6 +23,8 @@ namespace ScriptCs.Httpie.Test.Streams
             baseStream.Setup(s => s.Write(json));
             using (var target = new ContentAwareOutputStream(baseStream.Object, new ContentType("application/json")))
                 target.Write(Encoding.UTF8.GetBytes(json));
+
+            baseStream.Verify(s => s.Write(json));
         }
 
         [Fact]
@@ -33,6 +35,8 @@ namespace ScriptCs.Httpie.Test.Streams
             baseStream.Setup(s => s.Write(xml));
             using (var target = new ContentAwareOutputStream(baseStream.Object, new ContentType("application/xml")))
                 target.Write(Encoding.UTF8.GetBytes(xml));
+
+            baseStream.Verify(s => s.Write(xml));
         }
 
         [Fact]
@@ -42,6 +46,8 @@ namespace ScriptCs.Httpie.Test.Streams
             baseStream.Setup(s => s.Write(text));
             using (var target = new ContentAwareOutputStream(baseStream.Object, new ContentType("text/stuff")))
                 target.Write(Encoding.UTF8.GetBytes(text));
+
+            baseStream.Verify(s => s.Write(text));
         }
 
         [Fact]
@@ -51,6 +57,8 @@ namespace ScriptCs.Httpie.Test.Streams
             baseStream.Setup(s => s.Write(data));
             using (var target = new ContentAwareOutputStream(baseStream.Object, new ContentType("video/quicktime")))
                 target.Write(data);
+
+            baseStream.Verify(s => s.Write(data));
         }
     }
 
